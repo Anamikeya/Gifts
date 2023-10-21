@@ -29,9 +29,17 @@
             color: #333;
         }
 
-        #poem {
-            font-size: 18px;
-            color: #555;
+        #countdown {
+            animation: fadeIn 2s ease-in-out;
+            font-weight:bold;
+            color:#222;
+        }
+
+        #clock {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            font-family: "Monotype Cursivo", cursive;
         }
 
         @keyframes backgroundAnimation {
@@ -56,22 +64,58 @@
             #message {
                 font-size: 18px;
             }
-            #poem {
-                font-size: 14px;
+            #clock {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
     <div id="container">
-       
-        <div id="message">I miss you!</div>
-        <div id="poem">
-            In the quiet of the night, I softly sigh,
-            Underneath the starlit, moonlit sky.
-            With each passing day, my heart feels blue,
-            Oh, how deeply, my dear, I miss you.
+        <div id="message">I witness the most beautiful smile in the world on</div>
+        
+        <div id="countdown">
+            <p>November 9th, 12:30 PM IST:</p>
+            <div id="timer"></div>
+        </div>
+
+        <div id="clock">
+            Until We Meet:
+            <span id="ISTClock"></span>
         </div>
     </div>
+
+    <script>
+        // Set the target date and time in IST (Year, Month (0-11), Day, Hour, Minute, Second)
+        const targetDate = new Date(2023, 10, 9, 12, 30, 0); // November is 10 because it's zero-based.
+
+        // Update the countdown timer every second
+        const updateCountdown = () => {
+            const now = new Date();
+            const timeLeft = targetDate - now;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("timer").innerHTML = "EXPIRED";
+            } else {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                document.getElementById("timer").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+        };
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Update the IST clock every second
+        const updateISTClock = () => {
+            const ISTTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+            document.getElementById("ISTClock").textContent = ISTTime;
+        };
+
+        setInterval(updateISTClock, 1000);
+    </script>
 </body>
 </html>
